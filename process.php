@@ -1,4 +1,5 @@
-<?php require_once('header.php'); ?>
+<?php require_once('header.php'); 
+session_start();?>
 <body class="add">
 <div class="container inner saved">
 <header class="masthead mb-auto">
@@ -16,6 +17,7 @@
     <?php
 
     $first_name = filter_input(INPUT_POST, 'fname');
+    $_SESSION['user_name'] = $first_name;
     $last_name = filter_input(INPUT_POST, 'lname');
     $genre = filter_input(INPUT_POST, 'genre');
     $location = filter_input(INPUT_POST, 'location');
@@ -121,10 +123,16 @@
             // execute the insert
             $statement->execute();
 
+            if(isset($_SESSION['user_name'])){
             // show message
-            echo "<p> Song added! Thanks for sharing! </p>";
+            echo "<p> Song added! Thanks for your contribution, ". $_SESSION['user_name']."! </p>";
 
-            // disconnecting
+            }else{
+            // show message
+            echo "<p> Song added! Thanks for your contribution! </p>";
+
+        }
+        // disconnecting
             $statement->closeCursor();
         } catch (PDOException $e) {
             $error_message = $e->getMessage();
